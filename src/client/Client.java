@@ -4,7 +4,6 @@ package client;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  *  We will deal with the client as separate program from our project
