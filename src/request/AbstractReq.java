@@ -29,4 +29,13 @@ public abstract class AbstractReq {
     }
 
 
+    public String getKey(String key){
+        return this.map.get(key);
+    }
+
+    public void put(String key, String value){
+        this.map.put(key, value);
+    }
+
+
 }
