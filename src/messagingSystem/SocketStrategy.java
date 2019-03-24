@@ -1,12 +1,11 @@
 package messagingSystem;
 
+import request.AbstractReq;
 import response.Response;
-
-import javax.management.RuntimeErrorException;
 import java.io.*;
 import java.net.Socket;
 
-public class SocketStrategy {
+public class SocketStrategy implements Strategy{
 
     private Socket socket;
 
@@ -15,11 +14,12 @@ public class SocketStrategy {
     }
 
 
-    public void sendReq(String data){
+    @Override
+    public void sendReq(AbstractReq req){
         try {
             BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
+            wr.write(req.toString());
             wr.write("/r/n");
-            wr.write(data);
             wr.flush();
             wr.close();
         } catch (IOException e) {
@@ -27,6 +27,13 @@ public class SocketStrategy {
         }
     }
 
+
+    @Override
+    public void sendResponse(Response res) {
+
+    }
+
+    @Override
     public Response getResponse(){
         try{
             BufferedReader rd = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -43,6 +50,11 @@ public class SocketStrategy {
             e.printStackTrace();
         }
         throw new RuntimeException("Not a valid response.");
+    }
+
+    @Override
+    public AbstractReq getReq() {
+        return null;
     }
 
 }
