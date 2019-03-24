@@ -7,6 +7,13 @@ public abstract class AbstractReq {
     private String type;
     private Map<String, String> map;
 
+    public AbstractReq(String line){
+        String[] arr = line.split(",");
+        for(String s: arr){
+            String[] tmp = s.split("=");
+            map.put(tmp[0], tmp[1]);
+        }
+    }
 
     @Override
     public String toString(){

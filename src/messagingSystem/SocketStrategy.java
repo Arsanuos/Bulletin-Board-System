@@ -10,8 +10,8 @@ public class SocketStrategy implements Strategy{
 
     private Socket socket;
 
-    public SocketStrategy(){
-        this.socket = SocketConnection.getInstance();
+    public SocketStrategy(Socket socket){
+        this.socket = socket;
     }
 
 

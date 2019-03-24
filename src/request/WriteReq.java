@@ -1,4 +1,8 @@
 package request;
 
-public class WriteReq {
+public class WriteReq extends AbstractReq {
+
+    public WriteReq(String line){
+        super(line);
+    }
 }

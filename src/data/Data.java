@@ -9,7 +9,7 @@ public class Data {
         this.val = -1;
     }
 
-    public int getVal(){
+    public synchronized int getVal(){
         return this.val;
     }
 
