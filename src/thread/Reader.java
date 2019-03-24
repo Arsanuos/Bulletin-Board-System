@@ -4,8 +4,11 @@ import data.Data;
 
 public class Reader implements Runnable {
 
+    
     @Override
     public void run() {
-        Data.getInstance().getVal();
+        int data = Data.getInstance().getVal();
+        //TODO:: print here.
+
     }
 }
