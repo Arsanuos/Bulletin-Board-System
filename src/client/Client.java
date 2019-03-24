@@ -66,9 +66,6 @@ public class Client {
             read_soc.close();
             soc.close();
 
-            //sleep for while
-            long sleep_period =  (long) (Math.random() * 10000);
-            Thread.sleep(sleep_period);
         }
 
         pw.close();
