@@ -69,4 +69,9 @@ public class SocketStrategy implements Strategy{
         return RequestFactory.getInstance(recieve());
     }
 
+    @Override
+    public void setSocket(Socket socket){
+        this.socket = socket;
+    }
+
 }

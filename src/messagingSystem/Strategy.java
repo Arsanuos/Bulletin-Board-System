@@ -4,6 +4,8 @@ package messagingSystem;
 import request.AbstractReq;
 import response.Response;
 
+import java.net.Socket;
+
 public interface Strategy {
 
     public void sendReq(AbstractReq req);
@@ -13,4 +15,6 @@ public interface Strategy {
     public Response getResponse();
 
     public AbstractReq getReq();
+
+    public void setSocket(Socket socket);
 }

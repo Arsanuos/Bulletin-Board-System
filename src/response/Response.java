@@ -7,6 +7,10 @@ public class Response {
 
     private Map<String, String> table;
 
+    public Response(){
+
+    }
+
     public Response(String line){
         table = new HashMap<>();
         String[] values = line.split(",");
