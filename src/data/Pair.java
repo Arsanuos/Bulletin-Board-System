@@ -1,19 +1,31 @@
 package data;
 
 public class Pair {
-    private int first, second;
 
-    public Pair(int first, int second){
-        this.first = first;
-        this.second = second;
+    private int val, sSeq, rSeq, numReaders;
+
+    public Pair(int val, int sSeq, int rSeq, int numReaders){
+        this.val = val;
+        this.sSeq = sSeq;
+        this.rSeq = rSeq;
+        this.numReaders = numReaders;
     }
 
-    public int getFirst() {
-        return first;
+    public int getVal() {
+        return val;
     }
 
-    public int getSecond() {
-        return second;
+    public int getsSeq() {
+        return sSeq;
     }
+
+    public int getrSeq() {
+        return rSeq;
+    }
+
+    public int getNumReaders() {
+        return numReaders;
+    }
+
 
 }

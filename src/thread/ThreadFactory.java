@@ -12,11 +12,11 @@ public class ThreadFactory {
 
     public static void CreateThread(AbstractReq req, Strategy strategy, Socket socket){
         if(req.getKey("type").equals(Settings.READ_REQ)){
-            Thread thread = new Thread(new Reader(strategy, socket, -1));
+            Thread thread = new Thread(new Reader(strategy, socket));
             thread.start();
             return;
         }else if(req.getKey("type").equals(Settings.WRITE)){
-            Thread thread = new Thread(new Writer(strategy, socket, -1, Integer.valueOf(req.getKey("oVal"))));
+            Thread thread = new Thread(new Writer(strategy, socket, Integer.valueOf(req.getKey("oVal"))));
             thread.start();
             return;
         }
