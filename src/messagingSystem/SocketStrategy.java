@@ -1,6 +1,7 @@
 package messagingSystem;
 
 import request.AbstractReq;
+import request.RequestFactory;
 import response.Response;
 import java.io.*;
 import java.net.Socket;
@@ -17,24 +18,30 @@ public class SocketStrategy implements Strategy{
     @Override
     public void sendReq(AbstractReq req){
         try {
-            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
-            wr.write(req.toString());
-            wr.write("/r/n");
-            wr.flush();
-            wr.close();
+            send(req.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
     @Override
     public void sendResponse(Response res) {
-
+        try {
+            send(res.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public Response getResponse(){
+    private void send(String data) throws IOException {
+        BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF8"));
+        wr.write(data);
+        wr.write("/r/n");
+        wr.flush();
+        wr.close();
+    }
+
+    private String recieve(){
         try{
             BufferedReader rd = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line;
@@ -45,7 +52,7 @@ public class SocketStrategy implements Strategy{
                 ret.append(line);
             }
             rd.close();
-            return new Response(ret.toString());
+            return ret.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,8 +60,13 @@ public class SocketStrategy implements Strategy{
     }
 
     @Override
+    public Response getResponse(){
+        return new Response(recieve());
+    }
+
+    @Override
     public AbstractReq getReq() {
-        return null;
+        return RequestFactory.getInstance(recieve());
     }
 
 }

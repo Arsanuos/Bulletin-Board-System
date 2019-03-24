@@ -20,4 +20,18 @@ public class Response {
         return this.table.get(key);
     }
 
+    public void addValue(String key, String value){
+        table.put(key, value);
+    }
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for(Map.Entry<String, String> entry: table.entrySet()){
+            builder.append(entry.getKey());
+            builder.append("=");
+            builder.append(entry.getValue());
+        }
+        return builder.toString();
+    }
+
 }
