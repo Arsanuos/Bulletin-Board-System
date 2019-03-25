@@ -7,9 +7,9 @@ public class Start {
     private static int server_port;
     private static String server_ip;
     private static int num_readers;
-    private static String[] readers_ip; // we might need them later
+    private static String[] readers_ip;
     private static int num_writers;
-    private static String[] writers_ip; // we might need them later
+    private static String[] writers_ip;
     private static int num_access;
 
     private static final String config_file = "system.properties";
@@ -20,7 +20,7 @@ public class Start {
     private static final String client_password = "";
     private static final int ssh_port = 22;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         // read files
         read_file();
@@ -32,7 +32,7 @@ public class Start {
         run_clients();
     }
 
-    public static void run_server() throws IOException {
+    private static void run_server() {
 
         sshHandler sshHandler = new sshHandler();
 
@@ -54,7 +54,7 @@ public class Start {
 
     }
 
-    private static void run_clients() throws IOException {
+    private static void run_clients() {
 
         sshHandler sshHandler = new sshHandler();
 

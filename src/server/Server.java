@@ -17,7 +17,6 @@ public class Server{
      * */
 
     public static AtomicInteger S_seq;
-    private static int R_seq;
     public static AtomicInteger R_num;
     public static AtomicInteger O_val;
 
@@ -30,10 +29,13 @@ public class Server{
         int num_requests = Integer.parseInt(args[1]);
         ServerSocket ss = new ServerSocket(server_port);
 
+        int R_seq = 0;
         S_seq = new AtomicInteger(0);
-        R_seq = 0;
         R_num = new AtomicInteger(0);
         O_val = new AtomicInteger(-1);
+
+        readers_log = new Vector<>();
+        writers_log = new Vector<>();
 
         System.out.println("Server Started");
 
@@ -103,6 +105,7 @@ class RequestHandler extends Thread {
 
     private Socket s;
     private int r_req;
+
     public RequestHandler(Socket s, int r_req){
         this.r_req = r_req;
         this.s = s;
@@ -110,8 +113,8 @@ class RequestHandler extends Thread {
 
     @Override
     public void run() {
-        DataInputStream read_soc = null;
-        DataOutputStream write_soc = null;
+        DataInputStream read_soc;
+        DataOutputStream write_soc;
         try {
 
             read_soc = new DataInputStream(s.getInputStream()) ;

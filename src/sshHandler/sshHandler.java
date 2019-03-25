@@ -3,19 +3,17 @@ package sshHandler;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
 public class sshHandler {
 
-    private JSch jSch = null;
-    private Session session = null;
-    private Channel channel = null;
-    private OutputStream outputStream = null;
+    private JSch jSch;
+    private Session session;
+    private Channel channel;
+    private OutputStream outputStream;
 
     public boolean canConnect(String username, String password, String ip, int port){
 
