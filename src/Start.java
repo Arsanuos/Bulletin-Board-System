@@ -14,10 +14,10 @@ public class Start {
 
     private static final String config_file = "system.properties";
 
-    private static final String server_username = "muhammed";
-    private static final String server_password = "az123456789";
-    private static final String client_username = "muhammed";
-    private static final String client_password = "az123456789";
+    private static final String server_username = "";
+    private static final String server_password = "";
+    private static final String client_username = "";
+    private static final String client_password = "";
     private static final int ssh_port = 22;
 
     public static void main(String[] args) throws InterruptedException {
