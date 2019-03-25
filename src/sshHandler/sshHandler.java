@@ -52,13 +52,24 @@ public class sshHandler {
     public boolean applyCommand(String command){
         boolean status = false;
         try {
+
             this.outputStream.write(command.getBytes());
+
             this.outputStream.flush();
+
+            Thread.sleep(800);
+
             status = true;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return status;
+    }
+
+    public void close(){
+        channel.disconnect();
+        session.disconnect();
     }
 
 

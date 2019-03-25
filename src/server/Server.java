@@ -44,11 +44,13 @@ public class Server{
             num_requests--;
             R_seq++;
 
+            System.out.println("Server accepts new connection");
             // make new request handler with s as input to constructor
             RequestHandler rh = new RequestHandler(s, R_seq);
             rh.start();
         }
 
+        System.out.println("Server waits for all threads to finish");
         while (Thread.activeCount() > 1){
             try {
                 Thread.sleep(1000);
@@ -65,7 +67,7 @@ public class Server{
     public static void write_logs() throws FileNotFoundException {
 
         String log_filename = "log.txt";
-        PrintWriter pw = new PrintWriter(log_foldername + log_filename);
+        PrintWriter pw = new PrintWriter(log_filename);
 
         pw.println("Readers:");
         pw.println("sSeq\toVal\trID\trNum");

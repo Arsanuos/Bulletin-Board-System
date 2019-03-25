@@ -20,7 +20,7 @@ public class Start {
     private static final String client_password = "";
     private static final int ssh_port = 22;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
 
         // read files
         read_file();
@@ -30,9 +30,10 @@ public class Start {
 
         // start clients as separate programs.
         run_clients();
+
     }
 
-    private static void run_server() {
+    private static void run_server()  {
 
         sshHandler sshHandler = new sshHandler();
 
@@ -49,8 +50,12 @@ public class Start {
             int num_requests = (num_readers + num_writers) * num_access;
 
             // run server code
-            sshHandler.applyCommand("java server/Server " + server_port + " " + num_requests + " \n");
+            sshHandler.applyCommand("java server.Server " + server_port + " " + num_requests + " \n");
+
+            sshHandler.close();
+
         }
+
 
     }
 
@@ -85,8 +90,10 @@ public class Start {
             sshHandler.applyCommand("javac client/Client.java \n");
 
             // run server code
-            sshHandler.applyCommand("java client/Client " + type + " " + current_id + " "
+            sshHandler.applyCommand("java client.Client " + type + " " + current_id + " "
                     + server_ip + " " + server_port + " " + num_access + " \n");
+
+            sshHandler.close();
         }
     }
 
