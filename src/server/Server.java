@@ -137,11 +137,11 @@ class RequestHandler extends Thread {
                 msg = r_req + "\t" + Server.S_seq.toString();
             }
 
-            Server.S_seq.incrementAndGet();
-
             //sleep for while
             long sleep_period =  (long) (Math.random() * 10000);
             Thread.sleep(sleep_period);
+
+            Server.S_seq.incrementAndGet();
 
             // send response
             write_soc.writeUTF(msg);
