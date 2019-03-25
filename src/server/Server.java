@@ -9,9 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Server{
 
 
-    private final static String log_foldername = "logs/";
-
-
     /**
      *  Args given with the same order: server_port, num_requests
      * */
