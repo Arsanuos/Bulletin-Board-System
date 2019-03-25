@@ -20,13 +20,15 @@ public class Start {
     private static final String client_password = "";
     private static final int ssh_port = 22;
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws InterruptedException {
 
         // read files
         read_file();
 
         // start server as separate program.
         run_server();
+
+        Thread.sleep(1000);
 
         // start clients as separate programs.
         run_clients();
@@ -52,7 +54,7 @@ public class Start {
             // run server code
             sshHandler.applyCommand("java server.Server " + server_port + " " + num_requests + " \n");
 
-            sshHandler.close();
+            System.out.println("Server is on now");
 
         }
 
@@ -93,7 +95,7 @@ public class Start {
             sshHandler.applyCommand("java client.Client " + type + " " + current_id + " "
                     + server_ip + " " + server_port + " " + num_access + " \n");
 
-            sshHandler.close();
+            System.out.println("Client" + current_id + " is now on");
         }
     }
 

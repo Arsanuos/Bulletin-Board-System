@@ -15,6 +15,8 @@ public class sshHandler {
     private Channel channel;
     private OutputStream outputStream;
 
+    private static final int time_out = 10000;
+
     public boolean canConnect(String username, String password, String ip, int port){
 
         boolean status = false;
@@ -29,11 +31,11 @@ public class sshHandler {
             session = jSch.getSession(username, ip, port);
             session.setConfig(properties);
             session.setPassword(password);
-            session.connect();
+            session.connect(time_out);
 
             // open channel to talk to other
             channel = session.openChannel("shell");
-            channel.connect();
+            channel.connect(time_out);
 
             // will receive commands through terminal
             channel.setInputStream(System.in);
@@ -66,11 +68,5 @@ public class sshHandler {
         }
         return status;
     }
-
-    public void close(){
-        channel.disconnect();
-        session.disconnect();
-    }
-
 
 }
