@@ -125,20 +125,28 @@ class RequestHandler extends Thread {
             boolean type = type_name.equalsIgnoreCase("Reader");
             String msg;
 
-            // starts
-            if (type){
-                Server.R_num.incrementAndGet();
-                msg = r_req + "\t" + Server.S_seq.toString() + "\t" + Server.O_val.toString();
-            }else {
-                Server.O_val.set(id);
-                msg = r_req + "\t" + Server.S_seq.toString();
+            int r_num = 0;
+            int o_val;
+
+            if(type){
+                r_num = Server.R_num.incrementAndGet();
             }
 
-            //sleep for while
+            //sleep for while ( process request )
             long sleep_period =  (long) (Math.random() * 10000);
             Thread.sleep(sleep_period);
 
-            Server.S_seq.incrementAndGet();
+            int s_seq = Server.S_seq.incrementAndGet();
+
+            // starts
+            if (type){
+                o_val = Server.O_val.intValue();
+                msg = r_req + "\t" + s_seq + "\t" + o_val;
+            }else {
+                Server.O_val.getAndSet(id);
+                o_val = id;
+                msg = r_req + "\t" + s_seq;
+            }
 
             // send response
             write_soc.writeUTF(msg);
@@ -147,12 +155,12 @@ class RequestHandler extends Thread {
 
             // logs to the server
             Vector<Integer> log = new Vector<>();
-            log.add(Server.S_seq.intValue());
-            log.add(Server.O_val.intValue());
+            log.add(s_seq);
+            log.add(o_val);
             log.add(id);
 
             if (type){
-                log.add(Server.R_num.intValue());
+                log.add(r_num);
                 Server.R_num.decrementAndGet();
             }
 
