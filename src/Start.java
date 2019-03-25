@@ -56,6 +56,7 @@ public class Start {
 
             System.out.println("Server is on now");
 
+            sshHandler.close();
         }
 
 
@@ -96,6 +97,8 @@ public class Start {
                     + server_ip + " " + server_port + " " + num_access + " \n");
 
             System.out.println("Client" + current_id + " is now on");
+
+            sshHandler.close();
         }
     }
 

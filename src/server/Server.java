@@ -72,7 +72,7 @@ public class Server implements Server_RMI {
     }
 
     @Override
-    public synchronized String apply(boolean type, int id) throws RemoteException {
+    public String apply(boolean type, int id) throws RemoteException {
 
         int r_req = R_seq.getAndIncrement();
         int r_num = 0, s_seq;

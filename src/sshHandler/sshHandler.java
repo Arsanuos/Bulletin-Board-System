@@ -5,6 +5,7 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
@@ -14,6 +15,7 @@ public class sshHandler {
     private Session session;
     private Channel channel;
     private OutputStream outputStream;
+    private InputStream inputStream;
 
     private static final int time_out = 10000;
 
@@ -37,9 +39,9 @@ public class sshHandler {
             channel = session.openChannel("shell");
             channel.connect(time_out);
 
-            // will receive commands through terminal
-            channel.setInputStream(System.in);
+            inputStream = channel.getInputStream();
 
+            // will receive commands through terminal
             outputStream = channel.getOutputStream();
 
             status = true;
@@ -67,6 +69,10 @@ public class sshHandler {
             e.printStackTrace();
         }
         return status;
+    }
+
+    public void close(){
+        //TODO
     }
 
 }
