@@ -64,13 +64,17 @@ public class Server implements Server_RMI {
     public synchronized String apply(boolean type, int id) throws RemoteException {
 
         int r_req = R_seq.getAndIncrement();
-        int r_num, s_seq;
+        int r_num = 0, s_seq;
         String resp;
         String server_log;
+        int o_val = 0;
 
         // starts
         if (!type){
-            O_val.set(id);
+            O_val.getAndSet(id);
+        }else{
+            r_num = R_num.incrementAndGet();
+            o_val = O_val.get();
         }
 
         //sleep for while
@@ -84,13 +88,11 @@ public class Server implements Server_RMI {
         s_seq = S_seq.getAndIncrement();
 
         if (type){
-            r_num = R_num.incrementAndGet();
-            resp = r_req + "\t" + s_seq + "\t" + O_val.toString();
-            server_log = s_seq + "\t" + O_val.toString() + "\t" + id + "\t" + r_num ;
+            resp = r_req + "\t" + s_seq + "\t" + o_val;
+            server_log = s_seq + "\t" + o_val + "\t" + id + "\t" + r_num ;
         }else {
-            O_val.set(id);
             resp = r_req + "\t" + s_seq;
-            server_log = s_seq + "\t" + O_val.toString() + "\t" + id;
+            server_log = s_seq + "\t" + id + "\t" + id;
         }
 
         // logs to the server
