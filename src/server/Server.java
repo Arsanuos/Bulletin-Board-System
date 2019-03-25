@@ -29,6 +29,8 @@ public class Server implements Server_RMI {
 
     protected Server() throws FileNotFoundException {
 
+        super();
+
         S_seq = new AtomicInteger(0);
         R_num = new AtomicInteger(0);
         O_val = new AtomicInteger(-1);
@@ -37,6 +39,15 @@ public class Server implements Server_RMI {
         readers_log = new PrintWriter("log_readers.txt");
         writers_log = new PrintWriter("log_writers.txt");
 
+        readers_log.println(
+                "Readers:\n" +
+                "sSeq\toVal\trID\trNum");
+        readers_log.flush();
+
+        writers_log.println(
+                "Writers:\n" +
+                "sSeq\toVal\twID");
+        writers_log.flush();
     }
 
     public static void main(String[] args) throws IOException, AlreadyBoundException {
@@ -52,7 +63,7 @@ public class Server implements Server_RMI {
 
         Server_RMI rmi = (Server_RMI) UnicastRemoteObject.exportObject(s, server_port);
 
-        Registry r = LocateRegistry.getRegistry(server_port);
+        Registry r = LocateRegistry.createRegistry(server_port);
 
         r.bind(name, rmi);
 
@@ -99,8 +110,10 @@ public class Server implements Server_RMI {
         if (type){
             R_num.decrementAndGet();
             readers_log.println(server_log);
+            readers_log.flush();
         }else{
             writers_log.println(server_log);
+            writers_log.flush();
         }
 
         return resp;
