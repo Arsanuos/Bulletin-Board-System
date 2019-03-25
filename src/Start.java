@@ -1,4 +1,4 @@
-import configuration.Configuration;
+import sshHandler.sshHandler;
 
 import java.io.*;
 
@@ -14,10 +14,13 @@ public class Start {
 
     private static final String config_file = "system.properties";
 
-    public static void main(String[] args) throws IOException {
-        // load configuration
+    private static final String server_username = "";
+    private static final String server_password = "";
+    private static final String client_username = "";
+    private static final String client_password = "";
+    private static final int ssh_port = 22;
 
-        //Configuration configuration = Configuration.getInstance();
+    public static void main(String[] args) throws IOException {
 
         // read files
         read_file();
@@ -31,40 +34,63 @@ public class Start {
 
     public static void run_server() throws IOException {
 
-        // compile server code
-        Runtime.getRuntime().exec("javac server.java");
+        sshHandler sshHandler = new sshHandler();
 
-        // calc number of incoming requests
-        int num_requests = (num_readers + num_writers) * num_access;
+        boolean connected = sshHandler.canConnect(server_username,server_password, server_ip, ssh_port);
 
-        // run server code
-        Runtime.getRuntime().exec("java server " + server_port + " "
-                + num_requests);
+        if(connected){
+            // assume server folder at home directory
+            sshHandler.applyCommand("cd \n");
+
+            // compile server code
+            sshHandler.applyCommand("javac server/Server.java \n");
+
+            // calc number of incoming requests
+            int num_requests = (num_readers + num_writers) * num_access;
+
+            // run server code
+            sshHandler.applyCommand("java server/Server " + server_port + " " + num_requests + " \n");
+        }
+
     }
 
-    public static void run_clients() throws IOException {
+    private static void run_clients() throws IOException {
 
-        // compile client code
-        Runtime.getRuntime().exec("javac client.java");
+        sshHandler sshHandler = new sshHandler();
 
         int current_id = 0;
 
         // run client code, args -> type, id, server_address, server_port, num_access
         for(int i = 0 ; i < num_readers; i++){
-            Runtime.getRuntime().exec("java client 1 " + current_id + " "
-                    + server_ip + " " + server_ip + " " + num_access);
+            makeClient(sshHandler, current_id, readers_ip[i], true);
             current_id++;
         }
 
         for(int i = 0 ; i < num_writers; i++){
-            Runtime.getRuntime().exec("java client 0 " + current_id + " "
-                    + server_ip + " " + server_ip + " " + num_access);
+            makeClient(sshHandler, current_id, writers_ip[i], false);
             current_id++;
         }
 
     }
 
-    public static void read_file(){
+    private static void makeClient(sshHandler sshHandler, int current_id, String ip, boolean type){
+
+        boolean connected = sshHandler.canConnect(client_username, client_password, ip, ssh_port);
+
+        if(connected){
+            // assume server folder at home directory
+            sshHandler.applyCommand("cd \n");
+
+            // compile server code
+            sshHandler.applyCommand("javac client/Client.java \n");
+
+            // run server code
+            sshHandler.applyCommand("java client/Client " + type + " " + current_id + " "
+                    + server_ip + " " + server_port + " " + num_access + " \n");
+        }
+    }
+
+    private static void read_file(){
         try {
             FileReader fr = new FileReader(config_file);
 
@@ -76,6 +102,7 @@ public class Start {
             line = br.readLine();
             server_port = Integer.parseInt(line.split("=")[1]);
 
+            line = br.readLine();
             num_readers = Integer.parseInt(line.split("=")[1]);
             readers_ip = new String[num_readers];
 
@@ -84,6 +111,7 @@ public class Start {
                 readers_ip[i] = line.split("=")[1];
             }
 
+            line = br.readLine();
             num_writers = Integer.parseInt(line.split("=")[1]);
             writers_ip = new String[num_writers];
 
