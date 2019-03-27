@@ -90,7 +90,7 @@ public class Server{
         }
     }
 
-    public static void log_server(boolean type, Vector<Integer> log){
+    public static synchronized void log_server(boolean type, Vector<Integer> log){
         if(type){
             readers_log.add(log);
         }else{

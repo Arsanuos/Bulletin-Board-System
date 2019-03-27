@@ -20,7 +20,9 @@ public class Start {
     private static final String client_password = "";
     private static final int ssh_port = 22;
 
-    public static void main(String[] args) throws InterruptedException {
+
+
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
         // read files
         read_file();
@@ -35,7 +37,7 @@ public class Start {
 
     }
 
-    private static void run_server()  {
+    private static void run_server() throws FileNotFoundException {
 
         sshHandler sshHandler = new sshHandler();
 
@@ -56,31 +58,34 @@ public class Start {
 
             System.out.println("Server is on now");
 
+            sshHandler.close();
+
         }
 
 
     }
 
-    private static void run_clients() {
+    private static void run_clients() throws FileNotFoundException {
 
-        sshHandler sshHandler = new sshHandler();
 
         int current_id = 0;
 
         // run client code, args -> type, id, server_address, server_port, num_access
         for(int i = 0 ; i < num_readers; i++){
-            makeClient(sshHandler, current_id, readers_ip[i], true);
+            makeClient(current_id, readers_ip[i], true);
             current_id++;
         }
 
         for(int i = 0 ; i < num_writers; i++){
-            makeClient(sshHandler, current_id, writers_ip[i], false);
+            makeClient(current_id, writers_ip[i], false);
             current_id++;
         }
 
     }
 
-    private static void makeClient(sshHandler sshHandler, int current_id, String ip, boolean type){
+    private static void makeClient(int current_id, String ip, boolean type) throws FileNotFoundException {
+
+        sshHandler sshHandler = new sshHandler();
 
         boolean connected = sshHandler.canConnect(client_username, client_password, ip, ssh_port);
 
@@ -96,6 +101,8 @@ public class Start {
                     + server_ip + " " + server_port + " " + num_access + " \n");
 
             System.out.println("Client" + current_id + " is now on");
+
+            sshHandler.close();
         }
     }
 
@@ -139,4 +146,5 @@ public class Start {
             System.out.println("Error in the File");
         }
     }
+
 }
