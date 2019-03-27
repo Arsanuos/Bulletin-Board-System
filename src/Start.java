@@ -64,24 +64,24 @@ public class Start {
 
     private static void run_clients() {
 
-        sshHandler sshHandler = new sshHandler();
-
         int current_id = 0;
 
         // run client code, args -> type, id, server_address, server_port, num_access
         for(int i = 0 ; i < num_readers; i++){
-            makeClient(sshHandler, current_id, readers_ip[i], true);
+            makeClient(current_id, readers_ip[i], true);
             current_id++;
         }
 
         for(int i = 0 ; i < num_writers; i++){
-            makeClient(sshHandler, current_id, writers_ip[i], false);
+            makeClient(current_id, writers_ip[i], false);
             current_id++;
         }
 
     }
 
-    private static void makeClient(sshHandler sshHandler, int current_id, String ip, boolean type){
+    private static void makeClient(int current_id, String ip, boolean type){
+
+        sshHandler sshHandler = new sshHandler();
 
         boolean connected = sshHandler.canConnect(client_username, client_password, ip, ssh_port);
 

@@ -5,6 +5,7 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
@@ -72,7 +73,31 @@ public class sshHandler {
     }
 
     public void close(){
-        //TODO
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    byte[] msg = new byte[512];
+                    while(true){
+                        while(inputStream.available() > 0){
+                            int read = inputStream.read(msg, 0, msg.length);
+                            System.out.println(new String(msg, 0, read));
+                        }
+                        if(channel.isClosed()){
+                            if(inputStream.available() > 0){
+                                continue;
+                            }
+                            break;
+                        }
+                    }
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }finally {
+                    channel.disconnect();
+                    session.disconnect();
+                }
+            }
+        }).start();
     }
 
 }

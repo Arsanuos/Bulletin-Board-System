@@ -11,8 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Server implements Server_RMI {
 
 
-
-
     /**
      *  Args given with the same order: server_port, num_requests
      * */
@@ -71,6 +69,17 @@ public class Server implements Server_RMI {
 
     }
 
+    private synchronized void  write_log(String server_log, boolean type){
+        if (type){
+            R_num.decrementAndGet();
+            readers_log.println(server_log);
+            readers_log.flush();
+        }else{
+            writers_log.println(server_log);
+            writers_log.flush();
+        }
+    }
+
     @Override
     public String apply(boolean type, int id) throws RemoteException {
 
@@ -109,12 +118,8 @@ public class Server implements Server_RMI {
         // logs to the server
         if (type){
             R_num.decrementAndGet();
-            readers_log.println(server_log);
-            readers_log.flush();
-        }else{
-            writers_log.println(server_log);
-            writers_log.flush();
         }
+        write_log(server_log, type);
 
         return resp;
     }
