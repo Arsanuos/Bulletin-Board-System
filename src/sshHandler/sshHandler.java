@@ -112,7 +112,7 @@ public class sshHandler {
 class My_logger{
 
     private PrintWriter pw;
-    private static final String start_log = "start_log.txt";
+    private static final String start_log = "TCP_IP_log.txt";
     private static My_logger logger;
 
     private My_logger() throws FileNotFoundException {
