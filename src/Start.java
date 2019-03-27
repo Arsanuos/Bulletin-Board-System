@@ -20,7 +20,7 @@ public class Start {
     private static final String client_password = "";
     private static final int ssh_port = 22;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
         // read files
         read_file();
@@ -35,7 +35,7 @@ public class Start {
 
     }
 
-    private static void run_server()  {
+    private static void run_server() throws FileNotFoundException {
 
         sshHandler sshHandler = new sshHandler();
 
@@ -62,7 +62,7 @@ public class Start {
 
     }
 
-    private static void run_clients() {
+    private static void run_clients() throws FileNotFoundException {
 
         int current_id = 0;
 
@@ -79,7 +79,7 @@ public class Start {
 
     }
 
-    private static void makeClient(int current_id, String ip, boolean type){
+    private static void makeClient(int current_id, String ip, boolean type) throws FileNotFoundException {
 
         sshHandler sshHandler = new sshHandler();
 
